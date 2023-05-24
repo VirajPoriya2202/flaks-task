@@ -41,7 +41,7 @@ class user_model():
         for i in data:
             qry += f"{i}={data[i]}"
             # print(f"{i}={data[i]}")
-        print(qry)
+        print(qry) 
         return qry
 
         # return "This is user patch method"
