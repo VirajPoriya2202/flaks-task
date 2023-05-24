@@ -9,4 +9,3 @@ app = Flask(__name__)
 
 from controller import *
 
-print("hello")
