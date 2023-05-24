@@ -8,3 +8,5 @@ app = Flask(__name__)
 # import controller.user_controller as user_controller,
 
 from controller import *
+
+print("hello")
