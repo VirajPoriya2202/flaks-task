@@ -36,17 +36,33 @@ class user_model():
         return"User Deleted." if self.cur.rowcount > 0 else "Something goes wrong."
 
     def user_patch_model(self,id,data):
-        qry = "UPDATE user SET"
+        qry = "UPDATE user SET "
         print(data)
         for i in data:
-            qry += f"{i}={data[i]}"
+            qry += f"{i}='{data[i]}',"
             # print(f"{i}={data[i]}")
-        print(qry) 
-        return qry
+        qry[:-1]
+        qry = qry[:-1] + f" WHERE id={id}"
+        print(qry)
+        self.cur.execute(qry)
 
-        # return "This is user patch method"
-        # self.cur.execute(f"UPDATE user SET name='{data.get('name')}',email='{data.get('email')}',phone='{data.get('phone')}',role='{data.get('role')}',password='{data.get('password')}' WHERE id='{data.get('user_id')}'")
-        # self.cur.execute(f"DELETE FROM user WHERE id='{id}'")
-        # return"User Deleted." if self.cur.rowcount > 0 else "Something goes wrong."
+        if self.cur.rowcount>0:
+            return make_response({"message":"User updated"},201)
+        else:
+            return make_response({"message":"User Failed"},202)
 
+    def user_pagination_model(self,limit,page):
+        limit = int(limit)
+        page =int(page)
+        start = (page * limit) - limit
+        qry = f"SELECT * FROM user LIMIT {start},{limit}"
+
+        self.cur.execute(qry)
+        data = self.cur.fetchall()
+        print(data)
+        if len(data) > 0:
+            res = make_response({"payload":data,"limit":limit,"page_no":page},200)
+            return res
+        else:
+            return make_response({"message":"No Data Found"},204)
 
