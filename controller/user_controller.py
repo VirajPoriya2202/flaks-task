@@ -2,7 +2,7 @@ from app import app
 from model.user_model import user_model
 from flask import request
 obj = user_model()
-
+from datetime import datetime
 @app.route("/user/")
 def user_singup_controller():
     return obj.user_getall_model()
@@ -29,3 +29,16 @@ def user_patch_controller(id):
 @app.route("/user/getall/limit/<limit>/page/<page>",methods=["GET"])
 def user_pagination_controller(limit,page):
     return obj.user_pagination_model(limit,page)
+
+@app.route("/user/<uid>/upload/avatar",methods=["PUT"])
+def user_upload_avatar_controller(uid):
+    file = request.files['avatar']
+
+    # file.save(f"uploads/{file.filename}")
+    # return str(datetime.now().timestamp()).replace(".","")
+    u_name = str(datetime.now().timestamp()).replace(".","")
+    file_name = file.filename.split(".")
+    ext =  file_name[len(file_name)-1]
+    final_name = f"uploads/{u_name}.{ext}"
+    file.save(final_name)
+    return obj.user_upload_avatar_model(uid,final_name)
