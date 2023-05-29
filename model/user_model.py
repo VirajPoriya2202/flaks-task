@@ -37,15 +37,12 @@ class user_model():
 
     def user_patch_model(self,id,data):
         qry = "UPDATE user SET "
-        print(data)
         for i in data:
             qry += f"{i}='{data[i]}',"
-            # print(f"{i}={data[i]}")
         qry[:-1]
         qry = qry[:-1] + f" WHERE id={id}"
         print(qry)
         self.cur.execute(qry)
-
         if self.cur.rowcount>0:
             return make_response({"message":"User updated"},201)
         else:

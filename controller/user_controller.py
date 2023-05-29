@@ -3,6 +3,8 @@ from model.user_model import user_model
 from flask import request
 obj = user_model()
 from datetime import datetime
+from flask import send_file
+
 @app.route("/user/")
 def user_singup_controller():
     return obj.user_getall_model()
@@ -42,3 +44,7 @@ def user_upload_avatar_controller(uid):
     final_name = f"uploads/{u_name}.{ext}"
     file.save(final_name)
     return obj.user_upload_avatar_model(uid,final_name)
+
+@app.route("/uploads/<filename>",)
+def user_get_avatar_controller(filename):          
+    return send_file(f"uploads/{filename}")
